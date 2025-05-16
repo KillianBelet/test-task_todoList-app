@@ -35,6 +35,19 @@ export class TaskListComponent implements OnInit {
     }
   }
 
+  isDueToday(deadline: number): boolean {
+    const d = new Date(deadline);
+    const now = new Date();
+    return d.getFullYear() === now.getFullYear()
+        && d.getMonth()    === now.getMonth()
+        && d.getDate()     === now.getDate();
+  }
+
+  isOverdue(deadline: number): boolean {
+    return new Date(deadline).getTime() < Date.now();
+  }
+  
+
   async addTask() {
     const taskCreated = await firstValueFrom(this.taskService.createTask(this.newTaskTitle, this.newTaskDeadline));
     if(taskCreated){

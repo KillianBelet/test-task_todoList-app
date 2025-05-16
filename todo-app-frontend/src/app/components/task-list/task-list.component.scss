@@ -44,6 +44,17 @@
         border: none;
         cursor: pointer;
         padding: 5px 10px;
+      }&.completed {
+        background-color: #28a745; 
+        // vert 
+      }
+      &.due-today {
+        background-color: #fd7e14; 
+        //orange
+      }
+      &.overdue {
+        background-color: #dc3545; 
+        // rouge 
       }
     }
   }
