@@ -25,6 +25,27 @@ module.exports = {
     }
   },
 
+  update: async function (req, res) {
+    try {
+      const id = req.params.id;
+      const { completed } = req.body;
+
+      if (typeof completed !== 'boolean') {
+        return res.badRequest({ error: 'Le champ est requis et doit être booléen' });
+      }
+
+      const updatedTask = await Task.updateOne({ id }).set({ completed });
+      
+      if (!updatedTask) {
+        return res.notFound({ error: 'Tâche introuvable.' });
+      }
+      return res.ok(updatedTask);
+
+    } catch (err) {
+      return res.serverError(err);
+    }
+  },
+
   destroy: async function (req, res) {
     try {
       const task = await Task.destroyOne({id: req.params.id});

@@ -43,9 +43,17 @@ export class TaskListComponent implements OnInit {
     this.newTaskDeadline = '';
   }
 
-
   async toggleCompleted(task: Task) {
 
+  const isChecked = !task.completed;
+  task.completed = isChecked;
+
+  try {
+    const updated = await firstValueFrom(this.taskService.updateTask(task.id!, { completed: isChecked }));
+    task.completed = updated.completed;
+  } catch {
+    task.completed = !isChecked;
+  }
   }
 
   async deleteTask(id: string) {

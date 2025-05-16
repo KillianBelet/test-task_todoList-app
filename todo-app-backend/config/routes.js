@@ -12,6 +12,7 @@ module.exports.routes = {
 
   'GET /tasks': 'TaskController.find',
   'POST /task': 'TaskController.create',
+  'PATCH /task/:id': 'TaskController.update',
   'DELETE /task/:id': 'TaskController.destroy'
 
   /***************************************************************************

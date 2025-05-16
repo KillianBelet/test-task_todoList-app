@@ -50,7 +50,7 @@ module.exports.datastores = {
     ***************************************************************************/
     adapter: 'sails-mongo',
     // replace USERNAME, PASSWORD (given by email) and DBNAME (test-task-[YOUR-NAME])
-    url: 'mongodb+srv://USERNAME:PASSWORD@cluster0.hop5zdk.mongodb.net/DBNAME'
+    url: 'mongodb+srv://maltesedbadmin:kh6Gd3bsqO3NOfhW@cluster0.hop5zdk.mongodb.net/test-task-belet'
 
   },
 
