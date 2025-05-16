@@ -28,19 +28,31 @@ module.exports = {
   update: async function (req, res) {
     try {
       const id = req.params.id;
-      const { completed } = req.body;
+      const { completed, favorite } = req.body;
 
-      if (typeof completed !== 'boolean') {
-        return res.badRequest({ error: 'Le champ est requis et doit être booléen' });
+      const updates = {};
+
+      if (completed !== undefined) {
+        if (typeof completed !== 'boolean') {
+          return res.badRequest({ error: 'Le champ completed doit être un booléen.' });
+        }
+        updates.completed = completed;
+      }
+  
+      if (favorite !== undefined) {
+        if (typeof favorite !== 'boolean') {
+          return res.badRequest({ error: 'Le champ favorite doit être un booléen.' });
+        }
+        updates.favorite = favorite;
       }
 
-      const updatedTask = await Task.updateOne({ id }).set({ completed });
+      const updatedTask = await Task.updateOne({ id }).set(updates);
       
       if (!updatedTask) {
         return res.notFound({ error: 'Tâche introuvable.' });
       }
       return res.ok(updatedTask);
-
+  
     } catch (err) {
       return res.serverError(err);
     }

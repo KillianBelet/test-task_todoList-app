@@ -18,7 +18,7 @@ export class TaskService {
   }
 
 
-  updateTask(id: string, patch: { completed: boolean }): Observable<Task> {
+  updateTask(id: string, patch: Partial<Pick<Task,'completed'|'favorite'>>): Observable<Task> {
     return this.http.patch<Task>(`${API_URL}/task/${id}`, patch);
   }
 

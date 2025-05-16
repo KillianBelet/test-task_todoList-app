@@ -32,6 +32,13 @@
                 'due-today': !task.completed && task.deadline && isDueToday(task.deadline),
                 'overdue':   !task.completed && task.deadline && isOverdue(task.deadline)
               }">
+                    <button 
+                    class="btn-fav" 
+                    (click)="toggleFavorite(task)"
+                    [class.active]="task.favorite"
+                  >
+                    {{ task.favorite ? '★' : '☆' }}
+                  </button>
                 <input type="checkbox" [checked]="task.completed" (change)="toggleCompleted(task)">
                 <span>{{ task.title }}</span>
                 @if (task.deadline) {

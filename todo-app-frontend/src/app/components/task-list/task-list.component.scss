@@ -36,6 +36,19 @@
       gap: 10px;
       border-bottom: 1px solid #ddd;
 
+      .btn-fav {
+        background: none;
+        border: none;
+        font-size: 1.2rem;
+        cursor: pointer;
+        color: #ccc;
+        padding: 0;
+      
+        &.active {
+          color: gold;
+        }
+      }
+
 
       button {
         margin-left: auto;

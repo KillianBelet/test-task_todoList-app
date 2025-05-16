@@ -35,6 +35,13 @@ export class TaskListComponent implements OnInit {
     }
   }
 
+  private sortTasks(tasks: Task[]): Task[] {
+    return tasks.sort((a, b) => {
+      if (a.favorite === b.favorite) return 0;
+      return a.favorite ? -1 : 1;
+    });
+  }
+
   isDueToday(deadline: number): boolean {
     const d = new Date(deadline);
     const now = new Date();
@@ -46,7 +53,7 @@ export class TaskListComponent implements OnInit {
   isOverdue(deadline: number): boolean {
     return new Date(deadline).getTime() < Date.now();
   }
-  
+
 
   async addTask() {
     const taskCreated = await firstValueFrom(this.taskService.createTask(this.newTaskTitle, this.newTaskDeadline));
@@ -69,6 +76,23 @@ export class TaskListComponent implements OnInit {
   } catch {
     task.completed = !isChecked;
   }
+  }
+
+  async toggleFavorite(task: Task) {
+
+    const isChecked = !task.favorite;
+    task.favorite = isChecked;
+
+    try {
+      const updated = await firstValueFrom(
+        this.taskService.updateTask(task.id, { favorite: task.favorite })
+      );
+      task.favorite = updated.favorite;
+      this.tasks = this.sortTasks(this.tasks);
+    } catch (err) {
+      console.error(err);
+      task.favorite = !task.favorite;  
+    }
   }
 
   async deleteTask(id: string) {
