@@ -3,11 +3,13 @@ import { Task } from '../../models/task';
 import {TaskService} from "../../services/task.service";
 import {firstValueFrom} from "rxjs";
 import {FormsModule} from "@angular/forms";
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-task-list',
   imports: [
-    FormsModule
+    FormsModule,
+    CommonModule
   ],
   templateUrl: './task-list.component.html',
   styleUrl: './task-list.component.scss',
@@ -49,7 +51,7 @@ export class TaskListComponent implements OnInit {
   task.completed = isChecked;
 
   try {
-    const updated = await firstValueFrom(this.taskService.updateTask(task.id!, { completed: isChecked }));
+    const updated = await firstValueFrom(this.taskService.updateTask(task.id, { completed: isChecked }));
     task.completed = updated.completed;
   } catch {
     task.completed = !isChecked;
