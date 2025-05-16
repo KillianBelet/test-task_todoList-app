@@ -95,6 +95,8 @@ export class TaskListComponent implements OnInit {
     }
   }
 
+  
+
   async deleteTask(id: string) {
     await firstValueFrom(this.taskService.deleteTask(id));
     this.tasks = this.tasks.filter(task => task.id !== id);

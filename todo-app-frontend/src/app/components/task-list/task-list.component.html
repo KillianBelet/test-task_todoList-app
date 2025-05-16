@@ -2,8 +2,36 @@
     <h1>To-Do App</h1>
 
     <h3>Mes tâches favorites</h3>
+    <div class="task-list">
+        @for (task of tasks; track task.id){
+            @if (task.favorite == true) {
+            <div class="task-item"
+            [ngClass]="{
+                'completed': task.completed,
+                'due-today': !task.completed && task.deadline && isDueToday(task.deadline),
+                'overdue':   !task.completed && task.deadline && isOverdue(task.deadline)
+              }">
+                    <button 
+                    class="btn-fav" 
+                    (click)="toggleFavorite(task)"
+                    [class.active]="task.favorite"
+                  >
+                    {{ task.favorite ? '★' : '☆' }}
+                  </button>
+                <input type="checkbox" [checked]="task.completed" (change)="toggleCompleted(task)">
+                <span>{{ task.title }}</span>
+                @if (task.deadline) {
+                    <span> | à réaliser avant: {{ task.deadline | date:'dd/MM/yyyy HH:mm:ss' }}</span>
+                  }
+                <button (click)="deleteTask(task.id)">Supprimer</button>
+            </div>
+        }
 
-    <div>Aucune tâche favorite</div>
+        }
+    </div>
+     
+
+
     <!--Ajouter ici la liste des tâches favorites-->
 
 
