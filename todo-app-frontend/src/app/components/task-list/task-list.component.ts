@@ -20,12 +20,23 @@ export class TaskListComponent implements OnInit {
   showAddTask = false;
   newTaskTitle = '';
   newTaskDeadline = '';
+  searchTerm = '';  
 
 
   constructor(private taskService: TaskService) {}
 
   async ngOnInit() {
     await this.loadTasks();
+  }
+
+  get filteredTasks(): Task[] {
+    const term = this.searchTerm.trim().toLowerCase();
+    if (!term) {
+      return this.tasks;
+    }
+    return this.tasks.filter(t =>
+      t.title.toLowerCase().includes(term)
+    );
   }
 
   async loadTasks() {

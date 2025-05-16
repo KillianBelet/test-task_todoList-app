@@ -50,10 +50,18 @@
     }
 
     <h3 style="margin-top: 50px">Toutes mes tâches</h3>
+    <div class="input-group">
+        <input
+          type="text"
+          [(ngModel)]="searchTerm"
+          placeholder="Rechercher une tache…"
+        >
+      </div>
+
     <button (click)="showAddTask = true">Ajouter une tâche</button>
 
     <div class="task-list">
-        @for (task of tasks; track task.id){
+        @for (task of filteredTasks; track task.id) {
             <div class="task-item"
             [ngClass]="{
                 'completed': task.completed,
