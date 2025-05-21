@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import { Task } from '../../models/task';
 import {TaskService} from "../../services/task.service";
 import {firstValueFrom} from "rxjs";
@@ -7,13 +7,14 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-task-list',
+  standalone: true,
   imports: [
     FormsModule,
     CommonModule
   ],
   templateUrl: './task-list.component.html',
   styleUrl: './task-list.component.scss',
-  //changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaskListComponent implements OnInit {
   tasks: Task[] = [];
@@ -23,11 +24,15 @@ export class TaskListComponent implements OnInit {
   searchTerm = '';  
 
 
-  constructor(private taskService: TaskService) {}
+  constructor(private taskService: TaskService,
+        private cd: ChangeDetectorRef
+  ) {}
 
   async ngOnInit() {
     await this.loadTasks();
   }
+
+  
 
   get filteredTasks(): Task[] {
     const term = this.searchTerm.trim().toLowerCase();
@@ -39,12 +44,14 @@ export class TaskListComponent implements OnInit {
     );
   }
 
-  async loadTasks() {
+  private async loadTasks() {
     const tasks = await firstValueFrom(this.taskService.getTasks());
-    if(Array.isArray(tasks)){
+    if (Array.isArray(tasks)) {
       this.tasks = tasks.reverse();
+      this.cd.markForCheck();    
     }
   }
+
 
   private sortTasks(tasks: Task[]): Task[] {
     return tasks.sort((a, b) => {
@@ -69,7 +76,8 @@ export class TaskListComponent implements OnInit {
   async addTask() {
     const taskCreated = await firstValueFrom(this.taskService.createTask(this.newTaskTitle, this.newTaskDeadline));
     if(taskCreated){
-      this.tasks.unshift(taskCreated);
+    this.tasks = [taskCreated, ...this.tasks];  
+    this.cd.markForCheck();  
     }
     this.showAddTask = false;
     this.newTaskTitle = '';
@@ -83,11 +91,17 @@ export class TaskListComponent implements OnInit {
 
   try {
     const updated = await firstValueFrom(this.taskService.updateTask(task.id, { completed: isChecked }));
-    task.completed = updated.completed;
+      this.tasks = this.tasks.map(t => (t.id === task.id ? updated : t));
+      this.cd.markForCheck();
   } catch {
     task.completed = !isChecked;
   }
   }
+
+    trackById(index: number, task: Task) {
+    return task.id;
+  }
+
 
   async toggleFavorite(task: Task) {
 
@@ -99,7 +113,10 @@ export class TaskListComponent implements OnInit {
         this.taskService.updateTask(task.id, { favorite: task.favorite })
       );
       task.favorite = updated.favorite;
-      this.tasks = this.sortTasks(this.tasks);
+      this.tasks = this.sortTasks(
+        this.tasks.map(t => (t.id === task.id ? updated : t))
+      );
+      this.cd.markForCheck();
     } catch (err) {
       console.error(err);
       task.favorite = !task.favorite;  
@@ -111,5 +128,6 @@ export class TaskListComponent implements OnInit {
   async deleteTask(id: string) {
     await firstValueFrom(this.taskService.deleteTask(id));
     this.tasks = this.tasks.filter(task => task.id !== id);
+    this.cd.markForCheck();
   }
 }
