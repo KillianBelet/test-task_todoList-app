@@ -10,6 +10,11 @@
 
 module.exports.routes = {
 
+  //Système d'authentification
+  'POST /auth/register': 'AuthController.register',
+  'POST /auth/token':    'AuthController.createToken',
+
+  //Route pour la gestion CRUD des tâches
   'GET /tasks': 'TaskController.find',
   'POST /task': 'TaskController.create',
   'PATCH /task/:id': 'TaskController.update',

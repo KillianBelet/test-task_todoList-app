@@ -10,6 +10,8 @@
 
 module.exports.custom = {
 
+  jwtSecret: process.env.JWT_SECRET || 'PhraseSecretPourMaltese',
+
   /***************************************************************************
   *                                                                          *
   * Any other custom config this Sails app should use during development.    *

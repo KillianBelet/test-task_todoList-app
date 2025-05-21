@@ -49,8 +49,13 @@ module.exports.datastores = {
     *                                                                          *
     ***************************************************************************/
     adapter: 'sails-mongo',
+
+    // En dev : sails.config.mongo.uri (depuis local.js)
+    // En prod : process.env.MONGODB_URI
+    url: (process.env.NODE_ENV === 'production')
+      ? process.env.MONGODB_URI
+      : sails.config.mongo.uri
     // replace USERNAME, PASSWORD (given by email) and DBNAME (test-task-[YOUR-NAME])
-    url: 'mongodb+srv://maltesedbadmin:kh6Gd3bsqO3NOfhW@cluster0.hop5zdk.mongodb.net/test-task-belet'
 
   },
 

@@ -10,6 +10,13 @@
 
 module.exports.policies = {
 
+  AuthController: {
+    register: true,
+    createToken: true
+  },
+  TaskController: {
+    '*': 'isAuthenticated'
+  }
   /***************************************************************************
   *                                                                          *
   * Default policy for all controllers and actions, unless overridden.       *
