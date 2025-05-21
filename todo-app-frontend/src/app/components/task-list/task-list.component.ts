@@ -47,14 +47,14 @@ export class TaskListComponent implements OnInit {
   private async loadTasks() {
     const tasks = await firstValueFrom(this.taskService.getTasks());
     if (Array.isArray(tasks)) {
-      this.tasks = tasks.reverse();
+      this.tasks = [...tasks].reverse();
       this.cd.markForCheck();    
     }
   }
 
 
   private sortTasks(tasks: Task[]): Task[] {
-    return tasks.sort((a, b) => {
+    return [...tasks].sort((a, b) => {
       if (a.favorite === b.favorite) return 0;
       return a.favorite ? -1 : 1;
     });
@@ -88,6 +88,7 @@ export class TaskListComponent implements OnInit {
 
   const isChecked = !task.completed;
   task.completed = isChecked;
+  this.cd.markForCheck();
 
   try {
     const updated = await firstValueFrom(this.taskService.updateTask(task.id, { completed: isChecked }));
@@ -95,6 +96,7 @@ export class TaskListComponent implements OnInit {
       this.cd.markForCheck();
   } catch {
     task.completed = !isChecked;
+    this.cd.markForCheck();
   }
   }
 
@@ -107,6 +109,7 @@ export class TaskListComponent implements OnInit {
 
     const isChecked = !task.favorite;
     task.favorite = isChecked;
+    this.cd.markForCheck();    
 
     try {
       const updated = await firstValueFrom(
@@ -120,6 +123,7 @@ export class TaskListComponent implements OnInit {
     } catch (err) {
       console.error(err);
       task.favorite = !task.favorite;  
+      this.cd.markForCheck();
     }
   }
 
