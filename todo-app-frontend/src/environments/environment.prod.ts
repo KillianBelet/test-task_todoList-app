@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiBase: 'https://test-task-todolist-app.onrender.com/api'
+  apiBase: 'https://test-task-todolist-app.onrender.com'
 };
