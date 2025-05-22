@@ -160,10 +160,19 @@ module.exports = {
     *                                                                          *
     ***************************************************************************/
     cors: {
-      // allowOrigins: [
-      //   'https://example.com',
-      // ]
-    },
+      allRoutes: true,
+      allowOrigins: [
+        process.env.FRONTEND_URL  
+      ].filter(Boolean),
+
+      // Méthodes autorisées
+      allowRequestMethods: 'GET, POST, PUT, DELETE, OPTIONS',
+
+      // Headers autorisés
+      allowRequestHeaders: 'content-type, authorization',
+      allowCredentials: true,
+    }
+  
 
   },
 
