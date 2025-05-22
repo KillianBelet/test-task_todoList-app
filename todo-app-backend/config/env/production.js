@@ -166,7 +166,7 @@ module.exports = {
       ].filter(Boolean),
 
       // Méthodes autorisées
-      allowRequestMethods: 'GET, POST, PUT, DELETE, OPTIONS',
+      allowRequestMethods: 'GET, POST, PUT, DELETE, OPTIONS, PATCH',
 
       // Headers autorisés
       allowRequestHeaders: 'content-type, authorization',
