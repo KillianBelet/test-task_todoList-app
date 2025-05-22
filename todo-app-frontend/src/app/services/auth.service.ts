@@ -3,12 +3,13 @@ import { HttpClient } from '@angular/common/http';
 import { tap }        from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { API_URL } from '../app.component';
+import { environment } from '../../environments/environment.prod';
 
 interface AuthResponse { token: string; }
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private baseUrl = API_URL; 
+  private baseUrl = environment.apiBase;  
 
   constructor(private http: HttpClient) {}
 
