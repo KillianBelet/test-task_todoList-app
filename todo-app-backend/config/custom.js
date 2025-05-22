@@ -10,7 +10,7 @@
 
 module.exports.custom = {
 
-  jwtSecret: process.env.JWT_SECRET || 'PhraseSecretPourMaltese',
+  jwtSecret: process.env.JWT_SECRET ,
 
   /***************************************************************************
   *                                                                          *
